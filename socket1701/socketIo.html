@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="chatroom" style="width: 300px;height: 400px;border: 1px solid red;"></div>
+		<input type="text" id="sayinput" />
+		<input type="button" value="发送" id="sendBtn"/>
+	</body>
+	<script src="socket.io.js"></script>
+	<script type="text/javascript">
+		var ioSocket = null;
+window.onload = function() {
+	var ioSocket = io.connect("http://localhost:8000");
+
+	ioSocket.on("connect", function(){
+		ioSocket.send("connect from client");
+		console.log("连接到服务器");
+	})
+
+	ioSocket.on("message", function(msg){
+		var chatroom = document.querySelector("#chatroom");
+		chatroom.innerHTML += "<br/>" + msg;
+	})
+
+	ioSocket.on("error", function(error){
+		console.log(error);
+	})
+
+	ioSocket.on("disconnect", function(){
+		console.log("服务器关闭了");
+	})
+
+	function send() {
+		ioSocket.send(sayinput.value);
+		sayinput.value = "";
+	}
+
+	document.onkeyup = function(event) {
+		if(event.keyCode == 13) {
+			send()
+		}
+	}
+
+	sendBtn.onclick = function() {
+		send();
+	}
+}
+	</script>
+</html>

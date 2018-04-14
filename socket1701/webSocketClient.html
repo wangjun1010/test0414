@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="chatroom" style="width: 300px;height: 400px;border: 1px solid red;"></div>
+		<input type="text" id="sayinput" />
+		<input type="button" value="发送" id="sendBtn"/>
+	</body>
+	<script src="webSocketClient.js"></script>
+	<script type="text/javascript">
+		function send(){
+			ws.send(sayinput.value);
+			sayinput.value = "";
+		}
+		document.onkeyup = function(event){
+			if(event.keyCode == 13){
+				send()
+			}
+		}
+		sendBtn.onclick = function(){
+			send();
+		}
+	</script>
+</html>
